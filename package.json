@@ -1,0 +1,61 @@
+{
+  "name": "@capsara/sdk",
+  "version": "1.0.5",
+  "description": "Capsara SDK for TypeScript",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "encryption",
+    "zero-knowledge",
+    "secure-sharing",
+    "pgp",
+    "rsa",
+    "aes",
+    "file-sharing",
+    "multi-party",
+    "insurance",
+    "compliance",
+    "hipaa"
+  ],
+  "author": "Tessarai, LLC",
+  "license": "Capsara SDK License",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tessarai-corpus/capsara-typescript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tessarai-corpus/capsara-typescript/issues"
+  },
+  "homepage": "https://github.com/tessarai-corpus/capsara-typescript#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.15.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^20.17.10",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.18.0",
+    "typescript": "^5.9.0",
+    "vitest": "^2.1.8"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}
