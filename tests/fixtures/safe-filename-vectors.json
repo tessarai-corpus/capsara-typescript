@@ -1,0 +1,317 @@
+{
+  "description": "Shared test vectors for the safe file name of a received file. Every SDK runs these vectors; copies in each SDK's test folder must stay byte-identical. 'expected' is the safe name for 'input'. 'rejectOnSend' is true when a sending SDK's builder refuses 'input' as a file name.",
+  "vectors": [
+    {
+      "name": "plain name is unchanged",
+      "input": "report.pdf",
+      "expected": "report.pdf",
+      "rejectOnSend": false
+    },
+    {
+      "name": "hidden-style name is unchanged",
+      "input": ".bashrc",
+      "expected": ".bashrc",
+      "rejectOnSend": false
+    },
+    {
+      "name": "inner spaces are kept",
+      "input": "quarterly report v2.xlsx",
+      "expected": "quarterly report v2.xlsx",
+      "rejectOnSend": false
+    },
+    {
+      "name": "relative traversal keeps the last segment",
+      "input": "../../.ssh/authorized_keys",
+      "expected": "authorized_keys",
+      "rejectOnSend": true
+    },
+    {
+      "name": "absolute POSIX path keeps the last segment",
+      "input": "/etc/passwd",
+      "expected": "passwd",
+      "rejectOnSend": true
+    },
+    {
+      "name": "Windows path keeps the last segment",
+      "input": "C:\\Windows\\System32\\drivers\\etc\\hosts",
+      "expected": "hosts",
+      "rejectOnSend": true
+    },
+    {
+      "name": "mixed separators keep the last segment",
+      "input": "folder\\sub/mixed\\name.txt",
+      "expected": "name.txt",
+      "rejectOnSend": true
+    },
+    {
+      "name": "UNC path keeps the last segment",
+      "input": "\\\\server\\share\\x",
+      "expected": "x",
+      "rejectOnSend": true
+    },
+    {
+      "name": "drive-absolute path keeps the last segment",
+      "input": "C:\\x\\evil.exe",
+      "expected": "evil.exe",
+      "rejectOnSend": true
+    },
+    {
+      "name": "trailing separator leaves nothing",
+      "input": "dir/",
+      "expected": "file",
+      "rejectOnSend": true
+    },
+    {
+      "name": "NUL is removed",
+      "input": "bad\u0000name.txt",
+      "expected": "badname.txt",
+      "rejectOnSend": true
+    },
+    {
+      "name": "CR, LF and tab are removed",
+      "input": "line\r\nbreak\t.txt",
+      "expected": "linebreak.txt",
+      "rejectOnSend": true
+    },
+    {
+      "name": "BEL, US and DEL are removed",
+      "input": "bell\u0007\u001f\u007f.txt",
+      "expected": "bell.txt",
+      "rejectOnSend": true
+    },
+    {
+      "name": "alternate data stream colon is replaced",
+      "input": "a.txt:stream",
+      "expected": "a.txt_stream",
+      "rejectOnSend": false
+    },
+    {
+      "name": "drive-relative colon is replaced",
+      "input": "C:evil.exe",
+      "expected": "C_evil.exe",
+      "rejectOnSend": false
+    },
+    {
+      "name": "single-letter drive colon is replaced",
+      "input": "a:b",
+      "expected": "a_b",
+      "rejectOnSend": false
+    },
+    {
+      "name": "each Windows-invalid character is replaced",
+      "input": "w<>:\"|?*.txt",
+      "expected": "w_______.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "leading and trailing spaces are trimmed",
+      "input": "   spaced name.txt   ",
+      "expected": "spaced name.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "trailing dots are trimmed",
+      "input": "trailing.dots...",
+      "expected": "trailing.dots",
+      "rejectOnSend": false
+    },
+    {
+      "name": "mixed trailing dots and spaces are trimmed",
+      "input": "name. . .",
+      "expected": "name",
+      "rejectOnSend": false
+    },
+    {
+      "name": "non-ASCII spaces are kept",
+      "input": "\u00a0nbsp.txt\u00a0",
+      "expected": "\u00a0nbsp.txt\u00a0",
+      "rejectOnSend": false
+    },
+    {
+      "name": "empty name becomes file",
+      "input": "",
+      "expected": "file",
+      "rejectOnSend": true
+    },
+    {
+      "name": "single dot becomes file",
+      "input": ".",
+      "expected": "file",
+      "rejectOnSend": true
+    },
+    {
+      "name": "double dot becomes file",
+      "input": "..",
+      "expected": "file",
+      "rejectOnSend": true
+    },
+    {
+      "name": "three dots become file",
+      "input": "...",
+      "expected": "file",
+      "rejectOnSend": false
+    },
+    {
+      "name": "only spaces become file",
+      "input": "   ",
+      "expected": "file",
+      "rejectOnSend": true
+    },
+    {
+      "name": "only control characters become file",
+      "input": "\u0000\u0001",
+      "expected": "file",
+      "rejectOnSend": true
+    },
+    {
+      "name": "reserved name is prefixed",
+      "input": "CON",
+      "expected": "_CON",
+      "rejectOnSend": false
+    },
+    {
+      "name": "reserved name match ignores case",
+      "input": "nul",
+      "expected": "_nul",
+      "rejectOnSend": false
+    },
+    {
+      "name": "reserved name with extension is prefixed",
+      "input": "con.txt",
+      "expected": "_con.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "reserved name with several extensions is prefixed",
+      "input": "Lpt9.tar.gz",
+      "expected": "_Lpt9.tar.gz",
+      "rejectOnSend": false
+    },
+    {
+      "name": "reserved name followed by spaces is prefixed",
+      "input": "COM1 .log",
+      "expected": "_COM1 .log",
+      "rejectOnSend": false
+    },
+    {
+      "name": "reserved name after path stripping is prefixed",
+      "input": "uploads/../NUL\u0000.txt",
+      "expected": "_NUL.txt",
+      "rejectOnSend": true
+    },
+    {
+      "name": "longer name starting with a reserved name is kept",
+      "input": "CONSOLE.txt",
+      "expected": "CONSOLE.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "COM0 is not reserved",
+      "input": "COM0.txt",
+      "expected": "COM0.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "reserved name with a replaced character is kept",
+      "input": "AUX:",
+      "expected": "AUX_",
+      "rejectOnSend": false
+    },
+    {
+      "name": "accented Latin is unchanged",
+      "input": "r\u00e9sum\u00e9.docx",
+      "expected": "r\u00e9sum\u00e9.docx",
+      "rejectOnSend": false
+    },
+    {
+      "name": "CJK is unchanged",
+      "input": "\u65e5\u672c\u8a9e\u306e\u30d5\u30a1\u30a4\u30eb.txt",
+      "expected": "\u65e5\u672c\u8a9e\u306e\u30d5\u30a1\u30a4\u30eb.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "emoji are unchanged",
+      "input": "\ud83d\ude00 party \ud83c\udf89.png",
+      "expected": "\ud83d\ude00 party \ud83c\udf89.png",
+      "rejectOnSend": false
+    },
+    {
+      "name": "combining mark after a dot does not hide a reserved name",
+      "input": "CON.\u0301x",
+      "expected": "_CON.\u0301x",
+      "rejectOnSend": false
+    },
+    {
+      "name": "decomposed accent is kept as sent",
+      "input": "re\u0301sume\u0301.txt",
+      "expected": "re\u0301sume\u0301.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "right-to-left text is unchanged",
+      "input": "\u05e7\u05d5\u05d1\u05e5.pdf",
+      "expected": "\u05e7\u05d5\u05d1\u05e5.pdf",
+      "rejectOnSend": false
+    },
+    {
+      "name": "exactly 255 bytes is unchanged",
+      "input": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.txt",
+      "expected": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "long ASCII name keeps its extension",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt",
+      "expected": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "long name without extension is cut at 255 bytes",
+      "input": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "expected": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "rejectOnSend": false
+    },
+    {
+      "name": "long two-byte name is not split mid-character",
+      "input": "\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9.txt",
+      "expected": "\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9\u00e9.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "long three-byte name is not split mid-character",
+      "input": "\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5.pdf",
+      "expected": "\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5\u65e5.pdf",
+      "rejectOnSend": false
+    },
+    {
+      "name": "long emoji name is not split mid-character",
+      "input": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00.png",
+      "expected": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00.png",
+      "rejectOnSend": false
+    },
+    {
+      "name": "extension over 32 bytes is not kept",
+      "input": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "expected": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.xxxx",
+      "rejectOnSend": false
+    },
+    {
+      "name": "cut stem is trimmed of trailing spaces",
+      "input": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee                    f.txt",
+      "expected": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "cut that leaves a reserved name is prefixed",
+      "input": "CON                                                                                                                                                                                                                                                                                                            x.txt",
+      "expected": "_CON.txt",
+      "rejectOnSend": false
+    },
+    {
+      "name": "prefixed reserved name stays within 255 bytes",
+      "input": "CON.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "expected": "_CON.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "rejectOnSend": false
+    }
+  ]
+}

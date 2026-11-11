@@ -1,0 +1,74 @@
+Capsara SDK License
+
+Copyright (c) 2024-2026 Tessarai, LLC and Laird Rixford (the "License Holders"). All rights reserved.
+
+TERMS AND CONDITIONS
+
+1. GRANT OF LICENSE
+
+   Subject to the terms and conditions of this License, Tessarai, LLC
+   ("Licensor") grants you a limited, non-exclusive, non-transferable,
+   non-sublicensable, revocable license to use the Capsara SDK ("Software")
+   solely in connection with the Capsara platform and services provided by
+   Licensor.
+
+2. RESTRICTIONS
+
+   You may NOT:
+
+   a. Redistribute, sublicense, sell, lease, or otherwise transfer the
+      Software or any portion thereof to any third party;
+   b. Modify, adapt, translate, reverse engineer, decompile, disassemble,
+      or create derivative works based on the Software;
+   c. Use the Software to build, support, or operate any product or service
+      that competes with the Capsara platform;
+   d. Use the Software independently of or outside the Capsara platform;
+   e. Remove, alter, or obscure any copyright, trademark, or other
+      proprietary notices in the Software.
+
+3. PLATFORM BINDING
+
+   This license is valid only for use with the Capsara platform. Any use of
+   the Software outside the Capsara platform, including but not limited to
+   integration with competing or unrelated services, is strictly prohibited.
+
+4. INTELLECTUAL PROPERTY
+
+   The Software and all copies thereof are proprietary to and the property
+   of the License Holders. All right, title, and interest in and to the
+   Software, including all intellectual property rights therein, remain
+   exclusively with the License Holders. No rights are
+   granted to you other than as expressly set forth in this License.
+
+5. TERMINATION
+
+   This License is effective until terminated. Licensor may terminate this
+   License at any time, with or without cause, upon written notice. This
+   License will terminate automatically if you fail to comply with any term
+   or condition of this License. Upon termination, you must cease all use
+   of the Software and destroy all copies in your possession or control.
+
+6. GOVERNING TERMS
+
+   Use of the Software is governed by the Capsara Terms of Service, which
+   are incorporated herein by reference. In the event of any conflict
+   between this License and the Terms of Service, the Terms of Service
+   shall prevail.
+
+7. DISCLAIMER OF WARRANTIES
+
+   THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE LICENSE HOLDERS OR ANY CONTRIBUTORS BE
+   LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION
+   OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION
+   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+8. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
+   SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR
+   REVENUE, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA,
+   USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM YOUR USE OF
+   OR INABILITY TO USE THE SOFTWARE.
